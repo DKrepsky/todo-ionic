@@ -1,5 +1,5 @@
 {
-  "appId": "io.ionic.starter",
+  "appId": "com.hausenn.todo",
   "appName": "todo",
   "bundledWebRuntime": false,
   "npmClient": "npm",
