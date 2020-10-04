@@ -15,8 +15,8 @@ Alterar o título da página no toolbar para "ToDo App".
 Na página Home o usuário encontra uma lista estática com os items:
 
 - [x] Conhecer o Ionic
-- [] Conhecer o Angular
-- [] Concluir as atividades
+- [ ] Conhecer o Angular
+- [ ] Concluir as atividades
 
 sendo cada item composto por um label com o nome da tarefa e um checkbox que indica a situação da tarefa (completa ou incompleta).
 
