@@ -15,18 +15,18 @@
   
   <div id='container'>
     <div>
-      <ion-button>+</ion-button>
+      <ion-button (click)="addTodo()">+</ion-button>
       <ion-item>
         <ion-label position="floating">Adicionar Tarefa</ion-label>
-        <ion-input></ion-input>
+        <ion-input (keyup.enter)="addTodo()"></ion-input>
       </ion-item>
     </div>
     
     <!-- List toDo -->
     <ion-list style='margin-top: 20px;'>
-      <ion-item *ngFor="let entry of form">
+      <ion-item *ngFor="let todo of todos">
         <ion-checkbox slot="start" [(ngModel)]="entry.isChecked"></ion-checkbox>
-        <ion-label>{{entry.val}}</ion-label>
+        <ion-label>{{todo.title}}</ion-label>
         
       </ion-item>
     </ion-list>
