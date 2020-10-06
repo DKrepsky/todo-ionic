@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Blank
+      ToDo App
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -9,13 +9,41 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
+      <ion-title size="large">ToDo App</ion-title>
     </ion-toolbar>
   </ion-header>
 
   <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer"
-        href="https://ionicframework.com/docs/components">UI Components</a></p>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-input placeholder="Adicionar tarefa"></ion-input>
+            <ion-button>
+              <!-- Note o uso do slot icon-only -->
+              <ion-icon slot="icon-only" name="add-outline"></ion-icon>
+            </ion-button>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-list>
+            <ion-item>
+              <ion-label>Conhecer o Ionic</ion-label>
+              <ion-checkbox slot="start" checked="true"></ion-checkbox>
+            </ion-item>
+            <ion-item>
+              <ion-label>Conhecer o Angular</ion-label>
+              <ion-checkbox slot="start"></ion-checkbox>
+            </ion-item>
+            <ion-item>
+              <ion-label>Concluir as atividades</ion-label>
+              <ion-checkbox slot="start"></ion-checkbox>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </div>
 </ion-content>
