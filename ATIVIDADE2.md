@@ -18,6 +18,8 @@ Na página Home, caso a lista de tarefas esteja vazia, o usuário encontra a seg
 
 Na lista de tarefas da página Home, quando o usuário clicar no botão "+", uma nova tarefa deve ser adicionada a lista de tarefas com o nome sendo o valor do input "Adicionar tarefa". A tarefa deverá ser adicionada no estado "incompleta".
 
+Após adicionar a tarefa, o valor do input deverá ser restaurado para "" (string vazia).
+
 #### Regras:
 
 1. O nome da tarefa não pode ser vazio.
@@ -41,18 +43,15 @@ export interface ToDoItem {
 }
 ```
 
-Crie o arquivo "todo-list.type.ts" no diretório "src/app/models/types" e exporte o tipo **ToDoItemList** como um array de ToDoItem.
+Nota: Utilize a documentação do [TypeScript](https://www.typescriptlang.org/docs) para entender a sintaxe para [Interfaces](https://www.typescriptlang.org/docs/handbook/interfaces.html).
 
-Nota: Utilize a documentação do [TypeScript](https://www.typescriptlang.org/docs) para entender as syntaxes para [Interfaces](https://www.typescriptlang.org/docs/handbook/interfaces.html) e [Literal Types](https://www.typescriptlang.org/docs/handbook/literal-types.html).
-
-No arquivo [home.page.ts](src/app/pages/home/home.page.ts), utilize as definições acima para construir a lista de tarefas e implemente as funções **addTodoItem** e **removeTodoItem**. Lembre-se de validar os dados na função addTask conforme
-as regras definidas na user history "Adição de tarefas".
+No arquivo [home.page.ts](src/app/pages/home/home.page.ts), utilize as definições acima para construir a lista de tarefas e implemente as funções **addTodo** e **removeTodo**. Lembre-se de validar os dados na função addTask conforme as regras definidas na user history "Adição de tarefas".
 
 No arquivo [home.page.html](src/app/pages/home/home.page.html), utilize a diretiva [ngIf](https://angular.io/guide/built-in-directives#ngif) para mostrar a mensagem quando a lista estiver vazia e [ngFor](https://angular.io/guide/built-in-directives#ngfor) para gerar a lista de tarefas.
 
 Nas tarefas, utilize [interpolação](https://angular.io/guide/interpolation) para renderizar o nome da tarefa e [_Two Way Binding_](https://angular.io/guide/binding-syntax) para o estado da checkbox.
 
-Nos botões para adicionar e remover tarefa, utilize [Event Binding](https://angular.io/guide/event-binding) no evento "click" mapeando para as funções addTodoItem e removeTodoItem, respectivamente.
+Nos botões para adicionar e remover tarefa, utilize [Event Binding](https://angular.io/guide/event-binding) no evento "click" mapeando para as funções addTodo e removeTodo, respectivamente. No input, utilize o evento "keyup.enter" mapeando para a função addTodo.
 
 Utilizar o componente [ion-toast](https://ionicframework.com/docs/api/toast) para notificar o usuário de violações nas regras da history "Adição de tarefas" e para notificar que a tarefa foi removido com sucesso na history "Remoção de tarefas".
 
