@@ -56,3 +56,10 @@ Nos botões para adicionar e remover tarefa, utilize [Event Binding](https://ang
 Utilizar o componente [ion-toast](https://ionicframework.com/docs/api/toast) para notificar o usuário de violações nas regras da history "Adição de tarefas" e para notificar que a tarefa foi removido com sucesso na history "Remoção de tarefas".
 
 Utilizar o arquivo [home.page.scss](src/app/pages/home/home.page.scss) para ajustar o layout da página se necessário.
+
+Ao final da atividade 2, a aplicação deverá estar semelhante as imagens abaixo:
+
+![Atividade 2a](img/atividade2-a.png)
+![Atividade 2b](img/atividade2-b.png)
+![Atividade 2c](img/atividade2-c.png)
+![Atividade 2d](img/atividade2-d.png)
