@@ -34,4 +34,10 @@ Ao clicar no botão "+" nada acontece.
 
 No arquivo [home.page.html](src/app/pages/home/home.page.html), utilizar os componentes [ion-checkbox](https://ionicframework.com/docs/api/checkbox), [ion-button](https://ionicframework.com/docs/api/button), [ion-icon](https://ionicons.com/), [ion-list](https://ionicframework.com/docs/api/list) e [ion-input](https://ionicframework.com/docs/api/input) para implementar as user histories.
 
+Utilizar o [grid](https://ionicframework.com/docs/layout/grid) do ionic para centralizar os elementos.
+
 Utilizar o arquivo [home.page.scss](src/app/pages/home/home.page.scss) para ajustar o layout da página e dos componentes conforme necessário e remover os estilos que não estão sendo utilizados. Utilizar a linguagem [SCSS](https://sass-lang.com/guide).
+
+Ao final da atividade 1, a aplicação deverá estar semelhante a da imagem abaixo:
+
+![Atividade 1](img/atividade1.png)
