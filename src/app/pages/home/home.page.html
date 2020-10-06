@@ -23,17 +23,20 @@
     </div>
     
     <!-- List toDo -->
-    <ion-list style='margin-top: 20px;'>
+    <ion-list style='margin-top: 20px;' *ngIf="todos.length > 0;else todosIsEmpty">
       <ion-item *ngFor="let todo of todos">
-        <div *ngIf="!todos.length > 0; then thenBlock else elseBlock">
-          <p #thenBlock>Você não possui nenhum ToDo.</p>
-        </div>
+        
           
           <ion-checkbox slot="start" [(ngModel)]="todo.completed"></ion-checkbox>
           <ion-label>{{todo.title}}</ion-label>
-          <ion-button (click)="removeTodo(todo.id)"><ion-icon name="trash-outline"></ion-icon></ion-button>
+          <ion-button (click)="removeTodo(todo.id)" color="danger"><ion-icon name="trash-outline"></ion-icon></ion-button>
         
       </ion-item>
     </ion-list>
+    <ng-template #todosIsEmpty>
+      <div class="ion-text-center ion-padding">
+        <ion-label>Você não possui nenhuma tarefa</ion-label>
+      </div>
+    </ng-template>
   </div>
 </ion-content>
