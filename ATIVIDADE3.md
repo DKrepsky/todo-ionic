@@ -18,4 +18,4 @@ No arquivo [home.page.html](src/app/pages/home/home.page.html), substitua o cód
 
 Utilize [_Two Way Binding_](https://angular.io/guide/binding-syntax) para passagem da tarefa da home para o TodoItemComponent.
 
-Exporte os eventos "changed" (quando o estado da tarefa muda) e "deleted" (quando há um click no botão de remover) no componente TodoItemComponent e utilize [Event Bind](https://angular.io/guide/event-binding) na HomePage para executar as funções addTodoItem e removeTodoItem, respectivamente.
+Exporte o evento "removeEvent" (quando há um click no botão de remover) no componente TodoItemComponent e utilize [Event Bind](https://angular.io/guide/event-binding) na HomePage para executar a função removeTodo.
