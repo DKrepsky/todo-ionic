@@ -14,11 +14,16 @@
   </ion-header>
   
   <app-todo-item 
-    [todosTitle] = "todoTitle"
+    [todoTitle] = "todoTitle"
+    [idForTodo] = "idForTodo"
     [todos]="todos"
     [adicionar] = "addTodo"
     [remover] = "removeTodo"
-    [notify] = "SuccessToast"
+    [ErrorToast] = "ErrorToast"
+    [SuccessToast] = "SuccessToast"
+    [error] = "error"
+    [error2] = "error2"
+    [success] = "success"
   ></app-todo-item>
   
 </ion-content>
