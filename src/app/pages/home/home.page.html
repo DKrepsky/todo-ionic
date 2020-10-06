@@ -28,13 +28,8 @@
       <ion-row>
         <ion-col>
           <ion-list *ngIf="todos.length > 0;else todosIsEmpty">
-            <ion-item *ngFor="let todo of todos; let i = index">
-              <ion-label>{{todo.name}}</ion-label>
-              <ion-checkbox slot="start" [(ngModel)]="todo.done"></ion-checkbox>
-              <ion-button (click)="removeTodo(i)" color="danger">
-                <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
-              </ion-button>
-            </ion-item>
+            <app-todo-item *ngFor="let todo of todos; let i = index" [(todo)]="todos[i]" (removeEvent)="removeTodo(i)">
+            </app-todo-item>
           </ion-list>
           <ng-template #todosIsEmpty>
             <div class="ion-text-center ion-padding">

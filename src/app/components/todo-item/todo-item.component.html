@@ -1,0 +1,7 @@
+<ion-item>
+  <ion-label>{{todo?.name}}</ion-label>
+  <ion-checkbox slot="start" [(ngModel)]="todo.done" (ionChange)="changed()"></ion-checkbox>
+  <ion-button (click)="remove()" color="danger">
+    <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+  </ion-button>
+</ion-item>
