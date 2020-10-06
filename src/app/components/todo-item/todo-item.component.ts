@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-todo-item',
@@ -7,8 +7,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TodoItemComponent implements OnInit {
 
+  @Input() todos: Array<any>
+
+  @Input() adicionar: () => void;
+
+  @Input() remover: (id: number) => void;
+
+  @Input() notify: (id: number) => void;
+
   constructor() { }
 
   ngOnInit() {}
+
+  
 
 }

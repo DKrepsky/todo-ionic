@@ -14,8 +14,8 @@ import { HomePageRoutingModule } from './home-routing.module';
     FormsModule,
     IonicModule,
     HomePageRoutingModule,
-    TodoItemComponent
+    
   ],
-  declarations: [HomePage]
+  declarations: [HomePage, TodoItemComponent]
 })
 export class HomePageModule {}

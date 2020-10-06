@@ -13,32 +13,12 @@
     </ion-toolbar>
   </ion-header>
   
+  <app-todo-item 
+    [todosTitle] = "todoTitle"
+    [todos]="todos"
+    [adicionar] = "addTodo"
+    [remover] = "removeTodo"
+    [notify] = "SuccessToast"
+  ></app-todo-item>
   
-
-  <div id='container'>
-    <div>
-      <ion-button (click)="addTodo()">+</ion-button>
-      <ion-item>
-        <ion-label position="floating">Adicionar Tarefa</ion-label>
-        <ion-input [(ngModel)]="todoTitle" (keyup.enter)="addTodo()"></ion-input>
-      </ion-item>
-    </div>
-    
-    <!-- List toDo -->
-    <ion-list style='margin-top: 20px;' *ngIf="todos.length > 0;else todosIsEmpty">
-      <ion-item *ngFor="let todo of todos">
-        
-          
-          <ion-checkbox slot="start" [(ngModel)]="todo.completed"></ion-checkbox>
-          <ion-label>{{todo.title}}</ion-label>
-          <ion-button (click)="removeTodo(todo.id)" color="danger"><ion-icon name="trash-outline"></ion-icon></ion-button>
-        
-      </ion-item>
-    </ion-list>
-    <ng-template #todosIsEmpty>
-      <div class="ion-text-center ion-padding">
-        <ion-label>Você não possui nenhuma tarefa</ion-label>
-      </div>
-    </ng-template>
-  </div>
 </ion-content>
