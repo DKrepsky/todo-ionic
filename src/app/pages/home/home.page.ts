@@ -1,6 +1,8 @@
 import { Component } from "@angular/core";
 import { ToastController } from "@ionic/angular";
+import { Observable } from "rxjs";
 import { TodoItem } from "src/app/models/interfaces/todo-item.interface";
+import { TodoService } from "src/app/services/todo/todo.service";
 
 @Component({
   selector: "app-home",
@@ -8,29 +10,25 @@ import { TodoItem } from "src/app/models/interfaces/todo-item.interface";
   styleUrls: ["home.page.scss"],
 })
 export class HomePage {
-  public todos: Array<TodoItem> = [];
   public newTodoName: string = "";
+  public todos$: Observable<TodoItem[]> = this.todoService.getTodo();
 
-  constructor(private toastCtrl: ToastController) {}
+  constructor(
+    private todoService: TodoService,
+    private toastCtrl: ToastController
+  ) {}
 
-  addTodo() {
-    if (this.newTodoName.trim().length == 0) {
-      this.notify("O nome da tarefa não pode ser vazio.");
-    } else if (this.newTodoName.trim().length > 64) {
-      this.notify(" O nome da tarefa não pode possuir mais que 64 caracteres.");
-    } else {
-      this.todos.push({
-        name: this.newTodoName,
-        done: false,
-      });
-
+  add() {
+    try {
+      this.todoService.addTodo(this.newTodoName);
       this.newTodoName = "";
+    } catch (err) {
+      this.notify(err.message);
     }
   }
 
-  removeTodo(index: number) {
-    this.todos.splice(index, 1);
-
+  remove(index: number) {
+    this.todoService.removeTodo(index);
     this.notify("Tarefa removida com sucesso.");
   }
 

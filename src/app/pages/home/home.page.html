@@ -1,8 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      ToDo App
-    </ion-title>
+    <ion-title> ToDo App </ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -18,8 +16,12 @@
       <ion-row>
         <ion-col>
           <ion-item>
-            <ion-input [(ngModel)]="newTodoName" (keyup.enter)="addTodo()" placeholder="Adicionar tarefa"></ion-input>
-            <ion-button (click)="addTodo()">
+            <ion-input
+              [(ngModel)]="newTodoName"
+              (keyup.enter)="add()"
+              placeholder="Adicionar tarefa"
+            ></ion-input>
+            <ion-button (click)="add()">
               <ion-icon slot="icon-only" name="add"></ion-icon>
             </ion-button>
           </ion-item>
@@ -27,15 +29,24 @@
       </ion-row>
       <ion-row>
         <ion-col>
-          <ion-list *ngIf="todos.length > 0;else todosIsEmpty">
-            <app-todo-item *ngFor="let todo of todos; let i = index" [(todo)]="todos[i]" (removeEvent)="removeTodo(i)">
-            </app-todo-item>
-          </ion-list>
-          <ng-template #todosIsEmpty>
-            <div class="ion-text-center ion-padding">
-              <ion-label>Você não possui nenhuma tarefa</ion-label>
-            </div>
-          </ng-template>
+          <div *ngIf="todos$ | async as todos">
+            <div *ngIf="todos.length; then hasTodos; else todosIsEmpty"></div>
+            <ng-template #hasTodos>
+              <ion-list>
+                <app-todo-item
+                  *ngFor="let todo of todos; let i = index"
+                  [todo]="todo"
+                  (removeEvent)="remove(i)"
+                >
+                </app-todo-item>
+              </ion-list>
+            </ng-template>
+            <ng-template #todosIsEmpty>
+              <div class="ion-text-center ion-padding">
+                <ion-label>Você não possui nenhuma tarefa</ion-label>
+              </div>
+            </ng-template>
+          </div>
         </ion-col>
       </ion-row>
     </ion-grid>
