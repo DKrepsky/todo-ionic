@@ -79,7 +79,7 @@ export class HomePage{
     }
 
     
-
+    
     this.todoTitle = '';
     this.idForTodo++;
   }
