@@ -1,39 +1,19 @@
 import { Injectable } from '@angular/core';
 import { ToDoItem } from 'src/app/models/interfaces/todo-item.interface';
-import { BehaviorSubject } from 'rxjs';
-import { Observable } from 'rx';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TodoService {
-  private _todos: BehaviorSubject<Array<ToDoItem>>
+
+  public aux: ToDoItem[] = [];
+  private _todos: BehaviorSubject<Array<ToDoItem>> = new BehaviorSubject(this.aux);
 
   constructor() { }
 
-  public getTodo(): Observable<ToDoItem> {
-    
-    const data = this._todos.next([
-      {
-        'id': 1,
-        'title': 'Conhecer o Ionic',
-        'completed': true,
-      },
-      {
-        'id': 2,
-        'title': 'Conhecer o Angular',
-        'completed': false,
-      },
-      {
-        'id': 3,
-        'title': 'Concluir as atividades',
-        'completed': false,
-      },
-    ])
-    console.log(this._todos);
-
-    return data;
-    
-    
+  public getTodo(): Observable<Array<ToDoItem>> {   
+    return this._todos.asObservable();
+        
   }
 }
