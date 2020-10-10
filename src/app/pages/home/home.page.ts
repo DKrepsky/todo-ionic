@@ -14,11 +14,15 @@ export class HomePage{
   error: string;
   error2: string;
   success: string;
+
+  
   
 
   
 
-  constructor(public toastController: ToastController) { }
+  constructor(
+    public toastController: ToastController,
+  ) { }
   
 
   ngOnInit(){
@@ -27,23 +31,7 @@ export class HomePage{
     this.error = 'Seu ToDo deve ter um nome!';
     this.error2 = 'O nome de seu ToDo está muito grande!'
     this.success = 'Seu ToDo foi removido com sucesso!'
-    this.todos = [
-      {
-        'id': 1,
-        'title': 'Conhecer o Ionic',
-        'completed': true,
-      },
-      {
-        'id': 2,
-        'title': 'Conhecer o Angular',
-        'completed': false,
-      },
-      {
-        'id': 3,
-        'title': 'Concluir as atividades',
-        'completed': false,
-      },
-    ];
+    
   }
 
   async ErrorToast(error) {
@@ -62,27 +50,7 @@ export class HomePage{
     toast.present();
   }
 
-  addTodo(): void {
-      
-    if(this.todoTitle.trim().length === 0){
-      this.ErrorToast(this.error);
-    } else if(this.todoTitle.trim().length > 64){
-      this.ErrorToast(this.error2);
-    } else {
-      this.todos.push(
-        {
-          id: this.idForTodo,
-          title: this.todoTitle,
-          completed: false,
-        }  
-    )
-    }
-
-    
-    
-    this.todoTitle = '';
-    this.idForTodo++;
-  }
+  
 
   removeTodo(id: number): void {
     

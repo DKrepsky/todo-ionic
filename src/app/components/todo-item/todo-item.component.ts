@@ -14,10 +14,10 @@ export class TodoItemComponent implements OnInit {
   public _todos: Observable<ToDoItemList> = this.TodoService.getTodo();
 
   todosTest: ToDoItemList;
+  idForTodo: number;
 
   @Input() todos: Array<any>;
   @Input() todoTitle: string;
-  @Input() idForTodo: 4;
   @Input() error: string;
   @Input() error2: string;
   @Input() success: string;
@@ -30,20 +30,28 @@ export class TodoItemComponent implements OnInit {
     
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.idForTodo = 1;
+  }
 
  
   add() {
+    
       
     try{
+      
       this.TodoService.addTodo(this.todoTitle, this.idForTodo);
+      
     } catch (err){
       console.log('deu ruim');
     }
+    this.idForTodo++;
   }
 
   remove(index: number) {
+    
     this.TodoService.removeTodo(index);
+    
     //this.notify("Tarefa removida com sucesso.");
   }
   

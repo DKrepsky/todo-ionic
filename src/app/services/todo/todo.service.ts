@@ -39,7 +39,7 @@ export class TodoService {
   }
 
   removeTodo(index: number) {
-    this.aux.splice(index, 1);
+    this.aux = this.aux.filter(todo => todo.id !== index);
     this._todos.next(this.aux);
   }
 
