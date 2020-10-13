@@ -16,14 +16,9 @@ export class TodoItemComponent implements OnInit {
   todosTest: ToDoItemList;
   idForTodo: number;
 
-  @Input() todos: Array<any>;
-  @Input() todoTitle: string;
-  @Input() error: string;
-  @Input() error2: string;
-  @Input() success: string;
-
-  @Input() ErrorToast: (error) => void;
-  @Input() SuccessToast: (success) => void;
+  todos: Array<any>;
+  todoTitle: string;
+  
 
 
   constructor(public toastController: ToastController, private TodoService: TodoService,) { 
