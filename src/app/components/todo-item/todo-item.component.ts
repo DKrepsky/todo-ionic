@@ -21,26 +21,29 @@ export class TodoItemComponent implements OnInit {
   
 
 
-  constructor(public toastController: ToastController, private TodoService: TodoService,) { 
+  constructor(public toastController: ToastController, private TodoService: TodoService) { 
     
   }
 
   ngOnInit() {
+    this.todoTitle = '';
     this.idForTodo = 1;
+    this.TodoService.list().subscribe(dados => this.todosTest = dados);
+    
   }
 
  
   add() {
     
-      
+    console.log(this.todoTitle);
     try{
       
-      this.TodoService.addTodo(this.todoTitle, this.idForTodo);
+      this.TodoService.addTodo(this.todoTitle).subscribe();
       
     } catch (err){
       console.log('deu ruim');
     }
-    this.idForTodo++;
+    //this.idForTodo++;
   }
 
   remove(index: number) {
