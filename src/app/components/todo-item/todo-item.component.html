@@ -1,4 +1,4 @@
-<div id='container' *ngIf="todosTest as todos">
+<div id='container' *ngIf="todos as todos">
   <div>
     <ion-button (click)="add()">+</ion-button>
     <ion-item>
@@ -14,7 +14,7 @@
         
         <ion-checkbox slot="start" [(ngModel)]="todo.done"></ion-checkbox>
         <ion-label>{{todo.name}}</ion-label>
-        <ion-button (click)="this.remove()" color="danger"><ion-icon name="trash-outline"></ion-icon></ion-button>
+        <ion-button (click)="this.remove(todo)" color="danger"><ion-icon name="trash-outline"></ion-icon></ion-button>
       
     </ion-item>
   </ion-list>

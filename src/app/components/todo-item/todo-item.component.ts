@@ -3,6 +3,7 @@ import { ToastController } from '@ionic/angular';
 import { ToDoItemList } from 'src/app/models/types/todo-list.type';
 import {TodoService} from '../../services/todo/todo.service';
 import {Observable} from 'rxjs';
+import { ToDoItem } from 'src/app/models/interfaces/todo-item.interface';
 
 @Component({
   selector: 'app-todo-item',
@@ -13,23 +14,29 @@ export class TodoItemComponent implements OnInit {
 
   public _todos: Observable<ToDoItemList> = this.TodoService.getTodo();
 
-  todosTest: ToDoItemList;
+  todos: ToDoItemList;
   idForTodo: number;
 
-  todos: Array<any>;
+  
   todoTitle: string;
   
 
 
   constructor(public toastController: ToastController, private TodoService: TodoService) { 
-    
+    this.getTodo();
   }
 
   ngOnInit() {
     this.todoTitle = '';
     this.idForTodo = 1;
-    this.TodoService.list().subscribe(dados => this.todosTest = dados);
+    this.TodoService.list().subscribe(dados => this.todos = dados);
     
+  }
+
+  getTodo(){
+    this.TodoService.list().
+      subscribe
+      ((todos: ToDoItemList) => {this.todos = todos});
   }
 
  
@@ -38,7 +45,7 @@ export class TodoItemComponent implements OnInit {
     console.log(this.todoTitle);
     try{
       
-      this.TodoService.addTodo(this.todoTitle).subscribe();
+      this.TodoService.addTodo(this.todoTitle).subscribe(() => this.getTodo());
       
     } catch (err){
       console.log('deu ruim');
@@ -46,11 +53,9 @@ export class TodoItemComponent implements OnInit {
     //this.idForTodo++;
   }
 
-  remove(index: number) {
+  remove(todo: ToDoItemList) {
     
-    this.TodoService.removeTodo(index);
-    
-    //this.notify("Tarefa removida com sucesso.");
+    this.TodoService.removeTodo(todo).subscribe(() => this.getTodo());
   }
   
 

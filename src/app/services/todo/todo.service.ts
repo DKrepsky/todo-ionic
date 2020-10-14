@@ -24,6 +24,8 @@ export class TodoService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   }
 
+  private url = `https://api-todo-hausenn.herokuapp.com/v1/todo`;
+
   constructor(public toastController: ToastController, private http: HttpClient) { }
 
   public getTodo(): Observable<Array<ToDoItem>> {   
@@ -32,7 +34,7 @@ export class TodoService {
   }
 
   list() {
-    return this.http.get<ToDoItem[]>('https://api-todo-hausenn.herokuapp.com/v1/todo');  
+    return this.http.get<ToDoItem[]>(this.url);  
   }
 
   addTodo(todoTitle: string): Observable<ToDoItem[]> {
@@ -42,23 +44,27 @@ export class TodoService {
     } else if(todoTitle.trim().length > 64){
       this.Toast("O Nome do seu ToDo está muito grande!", 'warning');
     } else {
-      return this.http.post<ToDoItem[]>('https://api-todo-hausenn.herokuapp.com/v1/todo',
+      return this.http.post<ToDoItem[]>(this.url,
       {
         name: todoTitle,
         done: false,
       }, 
       this.httpOptions  
       );
-
     }
-    
   }
 
-  removeTodo(index: number) {
-    // this.aux = this.aux.filter(todo => todo.name !== index);
-    // this._todos.next(this.aux);
-    // this.Toast("Seu ToDo foi excluído com sucesso!", 'success');
-    console.log('test');
+  removeTodo(todo: ToDoItem[]) {
+    try{
+      console.log(todo.id);
+      this.Toast("ToDo excluído com sucesso!", 'success');
+      return this.http.delete<ToDoItem[]>(this.url + '/' + todo.id, this.httpOptions)
+      
+    } catch(err){
+      console.log('deu ruim');
+    }
+    
+    
   }
 
   async Toast(msg, color) {
