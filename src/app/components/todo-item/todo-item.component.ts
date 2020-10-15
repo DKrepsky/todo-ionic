@@ -2,8 +2,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ToastController } from '@ionic/angular';
 import { ToDoItemList } from 'src/app/models/types/todo-list.type';
 import {TodoService} from '../../services/todo/todo.service';
-import {Observable} from 'rxjs';
-import { ToDoItem } from 'src/app/models/interfaces/todo-item.interface';
+import { LoadingController } from '@ionic/angular';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-todo-item',
@@ -12,50 +12,96 @@ import { ToDoItem } from 'src/app/models/interfaces/todo-item.interface';
 })
 export class TodoItemComponent implements OnInit {
 
-  public _todos: Observable<ToDoItemList> = this.TodoService.getTodo();
-
+  
   todos: ToDoItemList;
-  idForTodo: number;
-
-  
+  idForTodo: number;  
   todoTitle: string;
+  connected: boolean;
+  loading: any;
   
-
-
-  constructor(public toastController: ToastController, private TodoService: TodoService) { 
+  constructor(public toastController: ToastController, private TodoService: TodoService, public loadingController: LoadingController) { 
     this.getTodo();
   }
 
   ngOnInit() {
     this.todoTitle = '';
     this.idForTodo = 1;
-    this.TodoService.list().subscribe(dados => this.todos = dados);
-    
+    this.TodoService.list().subscribe(dados => this.todos = dados);   
   }
 
-  getTodo(){
-    this.TodoService.list().
+  async getTodo(){
+    
+    await this.presentLoading();
+    
+    this.TodoService.list().pipe(
+      finalize(async () => {
+          // Hide the loading spinner on success or error
+          await this.loading.dismiss();
+      })
+  ).
       subscribe
-      ((todos: ToDoItemList) => {this.todos = todos});
+      ((todos: ToDoItemList) => {this.todos = todos})
+    
   }
 
  
-  add() {
-    
-    console.log(this.todoTitle);
-    try{
-      
-      this.TodoService.addTodo(this.todoTitle).subscribe(() => this.getTodo());
-      
+  async add() {
+    await this.presentLoading();
+
+    if(this.todoTitle.trim().length === 0){
+      this.Toast('Seu ToDo deve conter um nome.', 'warning');
+    } else if(this.todoTitle.trim().length > 64){
+      this.Toast("O Nome do seu ToDo está muito grande!", 'warning');
+    } 
+      try{       
+        this.TodoService.addTodo(this.todoTitle).pipe(
+      finalize(async () => {
+          // Hide the loading spinner on success or error
+          await this.loading.dismiss();
+      })
+  ).subscribe(() => this.getTodo());     
     } catch (err){
-      console.log('deu ruim');
+      this.Toast("Não foi possível criar um ToDo!", 'warning');
     }
-    //this.idForTodo++;
+       
   }
 
-  remove(todo: ToDoItemList) {
+  async remove(todoid: number) {
+    await this.presentLoading();
+    try{
+     
+      const data = this.TodoService.removeTodo(todoid).pipe(
+        finalize(async () => {
+            // Hide the loading spinner on success or error
+            await this.loading.dismiss();
+        })
+    ).subscribe(() => this.getTodo());
+      if(data){
+        this.Toast("Seu ToDo foi excluído com sucesso!", 'success');
+      }
+    }catch(err){
+      this.Toast("Não foi possível excluir seu ToDo!", 'warning');
+    }    
+  }
+
+  async presentLoading() {
     
-    this.TodoService.removeTodo(todo).subscribe(() => this.getTodo());
+    this.loading = await this.loadingController.create({
+        message: 'Loading...'
+    });
+    
+  await this.loading.present();
+  
+}
+
+
+  async Toast(msg, color) {
+    const toast = await this.toastController.create({
+      message: msg,
+      duration: 2000,
+      color: `${color}`,
+    });
+    toast.present();
   }
   
 
