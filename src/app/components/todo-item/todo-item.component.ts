@@ -19,9 +19,14 @@ export class TodoItemComponent implements OnInit {
   connected: boolean;
   loading: any;
   
-  constructor(public toastController: ToastController, private TodoService: TodoService, public loadingController: LoadingController) { 
-    this.getTodo();
-  }
+  constructor(
+    public toastController: ToastController, 
+    private TodoService: TodoService, 
+    public loadingController: LoadingController) 
+    { 
+      this.getTodo();
+    }
+
 
   ngOnInit() {
     this.todoTitle = '';
@@ -55,27 +60,23 @@ export class TodoItemComponent implements OnInit {
     } 
       try{       
         this.TodoService.addTodo(this.todoTitle).pipe(
-      finalize(async () => {
-          // Hide the loading spinner on success or error
-          await this.loading.dismiss();
-      })
-  ).subscribe(() => this.getTodo());     
-    } catch (err){
-      this.Toast("Não foi possível criar um ToDo!", 'warning');
+          finalize(async () => {
+            await this.loading.dismiss();
+        })
+        ).subscribe(() => this.getTodo());     
+      }catch (err){
+        this.Toast("Não foi possível criar um ToDo!", 'warning');
+      }       
     }
-       
-  }
 
   async remove(todoid: number) {
     await this.presentLoading();
     try{
-     
-      const data = this.TodoService.removeTodo(todoid).pipe(
-        finalize(async () => {
-            // Hide the loading spinner on success or error
-            await this.loading.dismiss();
-        })
-    ).subscribe(() => this.getTodo());
+     const data = this.TodoService.removeTodo(todoid).pipe(
+      finalize(async () => {
+        await this.loading.dismiss();
+      })
+      ).subscribe(() => this.getTodo());
       if(data){
         this.Toast("Seu ToDo foi excluído com sucesso!", 'success');
       }
@@ -84,25 +85,20 @@ export class TodoItemComponent implements OnInit {
     }    
   }
 
-  async presentLoading() {
-    
-    this.loading = await this.loadingController.create({
-        message: 'Loading...'
-    });
-    
-  await this.loading.present();
-  
-}
-
+  async presentLoading() {   
+      this.loading = await this.loadingController.create({
+          message: 'Loading...'
+      });    
+      await this.loading.present();  
+  }
 
   async Toast(msg, color) {
-    const toast = await this.toastController.create({
-      message: msg,
-      duration: 2000,
-      color: `${color}`,
-    });
-    toast.present();
+      const toast = await this.toastController.create({
+        message: msg,
+        duration: 3000,
+        color: `${color}`,
+      });
+      toast.present();
   }
   
-
 }
