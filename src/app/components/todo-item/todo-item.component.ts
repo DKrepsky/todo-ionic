@@ -45,7 +45,7 @@ export class TodoItemComponent implements OnInit {
     ).
       subscribe
       ((todos: ToDoItemList) => {this.todos = todos})
-      
+
       //Verifica a conexão com a Api
       if(this.todos === undefined){
         this.connected = false;
@@ -93,7 +93,7 @@ export class TodoItemComponent implements OnInit {
 
   async presentLoading() {   
       this.loading = await this.loadingController.create({
-          message: 'Loading...'
+          message: 'Conectando...'
       });    
       await this.loading.present();  
   }
