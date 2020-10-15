@@ -40,12 +40,18 @@ export class TodoItemComponent implements OnInit {
     
     this.TodoService.list().pipe(
       finalize(async () => {
-          // Hide the loading spinner on success or error
           await this.loading.dismiss();
       })
-  ).
+    ).
       subscribe
       ((todos: ToDoItemList) => {this.todos = todos})
+      
+      //Verifica a conexão com a Api
+      if(this.todos === undefined){
+        this.connected = false;
+      } else {
+        this.connected = true;
+      }
     
   }
 
