@@ -4,6 +4,9 @@ import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 
+import { Plugins } from '@capacitor/core';
+const { Storage } = Plugins;
+
 //  Dependency Injection: Primeiramente a função do DI é tornar os aplicativos Angular mais robustos, flexíveis e eficientes, bem como testáveis e sustentáveis.
 //  A estrutura da Dependency Injection fornece dados a um componente a partir de uma classe de serviço que é definida em seu próprio arquivo. 
 //  Um exemplo em nosso código: A classe serviço Todo.Service.ts consegue fornecer os serviços de adicionar e remover toDo para nossa aplicação e tendo um observável como o Array dos ToDos.
@@ -14,8 +17,9 @@ import { map } from 'rxjs/operators';
 })
 export class TodoService {
 
+  todos: ToDoItem[]
   
-  idForTodo: number;
+ 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   }
@@ -37,6 +41,35 @@ export class TodoService {
       }, 
       this.httpOptions  
       );    
+  }
+
+  async setTodo() {
+    this.http.get<ToDoItem[]>(this.url).subscribe
+    ((todos: ToDoItem[]) => {this.todos = todos})
+
+    //console.log(value);
+    
+    try{
+      await Storage.set({
+        key: 'todos',
+        value: JSON.stringify(this.todos)
+      });
+      this.getItem();
+      console.log('salvou no storage');
+
+    } catch(err){
+      console.log('nao salvou no storage');
+    }
+    
+    
+  }
+
+  async getItem() {
+    const ret = await Storage.get({ key: 'todos' });
+    const todo = JSON.parse(ret.value);
+    console.log(todo);
+    return todo
+    
   }
 
   removeTodo(idtodo: number): Observable<Boolean> {         

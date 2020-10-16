@@ -4,6 +4,7 @@ import { ToDoItemList } from 'src/app/models/types/todo-list.type';
 import {TodoService} from '../../services/todo/todo.service';
 import { LoadingController } from '@ionic/angular';
 import { finalize } from 'rxjs/operators';
+import { Plugins } from '@capacitor/core';
 
 @Component({
   selector: 'app-todo-item',
@@ -13,8 +14,8 @@ import { finalize } from 'rxjs/operators';
 export class TodoItemComponent implements OnInit {
 
   
-  todos: ToDoItemList;
-  idForTodo: number;  
+  todos: ToDoItemList; 
+  todosOffline: ToDoItemList;
   todoTitle: string;
   connected: boolean;
   loading: any;
@@ -25,18 +26,26 @@ export class TodoItemComponent implements OnInit {
     public loadingController: LoadingController) 
     { 
       this.getTodo();
+      this.connected = true;
     }
 
 
   ngOnInit() {
-    this.todoTitle = '';
-    this.idForTodo = 1;
-    this.TodoService.list().subscribe(dados => this.todos = dados);   
+    this.todoTitle = '';   
+    this.TodoService.list().subscribe(dados => this.todos = dados); 
+      
+    
+  }
+
+  getTodoOffline(){
+    this.TodoService.getItem().then(data => this.todos = data);
+     
   }
 
   async getTodo(){
     
     await this.presentLoading();
+    
     
     this.TodoService.list().pipe(
       finalize(async () => {
@@ -48,9 +57,13 @@ export class TodoItemComponent implements OnInit {
 
       //Verifica a conexão com a Api
       if(this.todos === undefined){
-        this.connected = false;
+        
+        this.getTodoOffline()
       } else {
-        this.connected = true;
+        
+        console.log('teste')
+        
+        
       }
     
   }
@@ -61,15 +74,19 @@ export class TodoItemComponent implements OnInit {
 
     if(this.todoTitle.trim().length === 0){
       this.Toast('Seu ToDo deve conter um nome.', 'warning');
+      await this.loading.dismiss();
+      return
     } else if(this.todoTitle.trim().length > 64){
       this.Toast("O Nome do seu ToDo está muito grande!", 'warning');
+      await this.loading.dismiss();
+      return
     } 
       try{       
         this.TodoService.addTodo(this.todoTitle).pipe(
           finalize(async () => {
             await this.loading.dismiss();
         })
-        ).subscribe(() => this.getTodo());     
+        ).subscribe(() => this.getTodo());
       }catch (err){
         this.Toast("Não foi possível criar um ToDo!", 'warning');
       }       
@@ -87,6 +104,7 @@ export class TodoItemComponent implements OnInit {
         this.Toast("Seu ToDo foi excluído com sucesso!", 'success');
       }
     }catch(err){
+      await this.loading.dismiss();
       this.Toast("Não foi possível excluir seu ToDo!", 'warning');
     }    
   }

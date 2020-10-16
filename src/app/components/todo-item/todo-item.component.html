@@ -1,4 +1,4 @@
-<div *ngIf="connected">
+
   <div id='container' *ngIf="todos as todos">
     <div id='div'>
       <ion-button id='ion-button'(click)="add()">+</ion-button>
@@ -24,17 +24,5 @@
       </div>
     </ng-template>
   </div>
-</div>
 
-<div id='container' *ngIf="!connected">
-  <div>
-
-    <p style='font-weight: bold; font-size: large; margin-top: 30px;'>Não foi possível se conectar ao Banco de Dados :(</p>
-    <ion-button (click)="this.getTodo()" style='margin-top: 30px;' color="warning">Recarregar</ion-button>
-    
-  </div>
-    
-  
-    
-</div>
 
