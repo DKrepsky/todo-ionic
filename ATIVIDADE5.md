@@ -16,7 +16,7 @@ O usuário ao abrir o app encontra uma tela de carregando (loading), o carregame
 
 ## Instruções
 
-Para a implementação da atividade 5, utilize a API: (todo-hausenn)[https://todohausenn.docs.apiary.io/#].
+Para a implementação da atividade 5, utilize a API: [todo-hausenn](https://todohausenn.docs.apiary.io/#).
 
-Para a tela de carregamento, utilize o componente (ion-loading)[https://ionicframework.com/docs/api/loading].
+Para a tela de carregamento, utilize o componente [ion-loading](https://ionicframework.com/docs/api/loading).
 

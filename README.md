@@ -54,7 +54,7 @@ Seguir os seguintes passos para implementação das atividades e submissão para
 3. [Componente TodoItem](ATIVIDADE3.md).
 4. [Utilizando service como provider para as tarefas](ATIVIDADE3.md).
 5. [Salvando as tarefas em um servidor remoto](ATIVIDADE5.md).
-6. [Transformando dados com pipes](ATIVIDADE6.md).
+6. [Sincronismo de tarefas com storage local](ATIVIDADE6.md).
 7. [Customização das tarefas com directives](ATIVIDADE7.md).
 8. [Teste unitário e e2e](ATIVIDADE8.md).
 9. [Página About e rotas](ATIVIDADE9.md).
