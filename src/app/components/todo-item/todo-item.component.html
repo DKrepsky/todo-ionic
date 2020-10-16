@@ -1,26 +1,40 @@
-<div id='container' *ngIf="_todos | async as todos">
-  <div>
-    <ion-button (click)="add()">+</ion-button>
-    <ion-item>
-      <ion-label position="floating">Adicionar Tarefa</ion-label>
-      <ion-input [(ngModel)]="todoTitle" (keyup.enter)="add()"></ion-input>
-    </ion-item>
-  </div>
-  
-  <!-- List toDo -->
-  <ion-list style='margin-top: 20px;' *ngIf="todos.length > 0;else todosIsEmpty">
-    <ion-item *ngFor="let todo of todos">
-      
-        
-        <ion-checkbox slot="start" [(ngModel)]="todo.completed"></ion-checkbox>
-        <ion-label>{{todo.title}}</ion-label>
-        <ion-button (click)="this.remove(todo.id)" color="danger"><ion-icon name="trash-outline"></ion-icon></ion-button>
-      
-    </ion-item>
-  </ion-list>
-  <ng-template #todosIsEmpty>
-    <div class="ion-text-center ion-padding">
-      <ion-label>Você não possui nenhuma tarefa</ion-label>
+<div *ngIf="connected">
+  <div id='container' *ngIf="todos as todos">
+    <div id='div'>
+      <ion-button id='ion-button'(click)="add()">+</ion-button>
+      <ion-item>
+        <ion-label position="floating">Adicionar Tarefa</ion-label>
+        <ion-input [(ngModel)]="todoTitle" (keyup.enter)="add()"></ion-input>
+      </ion-item>
     </div>
-  </ng-template>
+    
+    
+    <ion-list style='margin-top: 20px;' *ngIf="todos.length > 0;else todosIsEmpty">
+      <ion-item *ngFor="let todo of todos">
+            
+          <ion-checkbox slot="start" [(ngModel)]="todo.done"></ion-checkbox>
+          <ion-label>{{todo.name}}</ion-label>
+          <ion-button (click)="this.remove(todo.id)" color="danger"><ion-icon name="trash-outline"></ion-icon></ion-button>
+        
+      </ion-item>
+    </ion-list>
+    <ng-template #todosIsEmpty>
+      <div class="ion-text-center ion-padding">
+        <ion-label>Você não possui nenhuma tarefa</ion-label>
+      </div>
+    </ng-template>
+  </div>
 </div>
+
+<div id='container' *ngIf="!connected">
+  <div>
+
+    <p style='font-weight: bold; font-size: large; margin-top: 30px;'>Não foi possível se conectar ao Banco de Dados :(</p>
+    <ion-button (click)="this.getTodo()" style='margin-top: 30px;' color="warning">Recarregar</ion-button>
+    
+  </div>
+    
+  
+    
+</div>
+

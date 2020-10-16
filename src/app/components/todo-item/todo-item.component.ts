@@ -2,7 +2,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ToastController } from '@ionic/angular';
 import { ToDoItemList } from 'src/app/models/types/todo-list.type';
 import {TodoService} from '../../services/todo/todo.service';
-import {Observable} from 'rxjs';
+import { LoadingController } from '@ionic/angular';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-todo-item',
@@ -11,44 +12,99 @@ import {Observable} from 'rxjs';
 })
 export class TodoItemComponent implements OnInit {
 
-  public _todos: Observable<ToDoItemList> = this.TodoService.getTodo();
-
-  todosTest: ToDoItemList;
-  idForTodo: number;
-
-  todos: Array<any>;
-  todoTitle: string;
   
+  todos: ToDoItemList;
+  idForTodo: number;  
+  todoTitle: string;
+  connected: boolean;
+  loading: any;
+  
+  constructor(
+    public toastController: ToastController, 
+    private TodoService: TodoService, 
+    public loadingController: LoadingController) 
+    { 
+      this.getTodo();
+    }
 
-
-  constructor(public toastController: ToastController, private TodoService: TodoService,) { 
-    
-  }
 
   ngOnInit() {
+    this.todoTitle = '';
     this.idForTodo = 1;
+    this.TodoService.list().subscribe(dados => this.todos = dados);   
+  }
+
+  async getTodo(){
+    
+    await this.presentLoading();
+    
+    this.TodoService.list().pipe(
+      finalize(async () => {
+          await this.loading.dismiss();
+      })
+    ).
+      subscribe
+      ((todos: ToDoItemList) => {this.todos = todos})
+
+      //Verifica a conexão com a Api
+      if(this.todos === undefined){
+        this.connected = false;
+      } else {
+        this.connected = true;
+      }
+    
   }
 
  
-  add() {
-    
-      
-    try{
-      
-      this.TodoService.addTodo(this.todoTitle, this.idForTodo);
-      
-    } catch (err){
-      console.log('deu ruim');
+  async add() {
+    await this.presentLoading();
+
+    if(this.todoTitle.trim().length === 0){
+      this.Toast('Seu ToDo deve conter um nome.', 'warning');
+    } else if(this.todoTitle.trim().length > 64){
+      this.Toast("O Nome do seu ToDo está muito grande!", 'warning');
+    } 
+      try{       
+        this.TodoService.addTodo(this.todoTitle).pipe(
+          finalize(async () => {
+            await this.loading.dismiss();
+        })
+        ).subscribe(() => this.getTodo());     
+      }catch (err){
+        this.Toast("Não foi possível criar um ToDo!", 'warning');
+      }       
     }
-    this.idForTodo++;
+
+  async remove(todoid: number) {
+    await this.presentLoading();
+    try{
+     const data = this.TodoService.removeTodo(todoid).pipe(
+      finalize(async () => {
+        await this.loading.dismiss();
+      })
+      ).subscribe(() => this.getTodo());
+      if(data){
+        this.Toast("Seu ToDo foi excluído com sucesso!", 'success');
+      }
+    }catch(err){
+      this.Toast("Não foi possível excluir seu ToDo!", 'warning');
+    }    
   }
 
-  remove(index: number) {
-    
-    this.TodoService.removeTodo(index);
-    
-    //this.notify("Tarefa removida com sucesso.");
+  async presentLoading() {   
+      this.loading = await this.loadingController.create({
+          message: 'Conectando...'
+      });    
+      await this.loading.present();  
+  }
+
+  async Toast(msg, color) {
+      const toast = await this.toastController.create({
+        message: msg,
+        duration: 3000,
+        color: `${color}`,
+      });
+      toast.present();
   }
   
-
 }
