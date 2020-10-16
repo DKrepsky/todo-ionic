@@ -1,5 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ToastController } from '@ionic/angular';
+import { ToDoItemList } from 'src/app/models/types/todo-list.type';
+import {TodoService} from '../../services/todo/todo.service';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-todo-item',
@@ -8,24 +11,44 @@ import { ToastController } from '@ionic/angular';
 })
 export class TodoItemComponent implements OnInit {
 
-  @Input() todos: Array<any>;
-  @Input() todoTitle: string;
-  @Input() idForTodo: 4;
-  @Input() error: string;
-  @Input() error2: string;
-  @Input() success: string;
+  public _todos: Observable<ToDoItemList> = this.TodoService.getTodo();
 
-  @Input() adicionar: () => void;
-  @Input() remover: (id: number) => void;
+  todosTest: ToDoItemList;
+  idForTodo: number;
 
-  @Input() ErrorToast: (error) => void;
-  @Input() SuccessToast: (success) => void;
+  todos: Array<any>;
+  todoTitle: string;
+  
 
 
-  constructor(public toastController: ToastController) { }
+  constructor(public toastController: ToastController, private TodoService: TodoService,) { 
+    
+  }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.idForTodo = 1;
+  }
 
+ 
+  add() {
+    
+      
+    try{
+      
+      this.TodoService.addTodo(this.todoTitle, this.idForTodo);
+      
+    } catch (err){
+      console.log('deu ruim');
+    }
+    this.idForTodo++;
+  }
+
+  remove(index: number) {
+    
+    this.TodoService.removeTodo(index);
+    
+    //this.notify("Tarefa removida com sucesso.");
+  }
   
 
 }
