@@ -22,6 +22,7 @@
     "@capacitor/core": "^2.4.2",
     "@ionic-native/core": "^5.0.0",
     "@ionic/angular": "^5.0.0",
+    "ng-connection-service": "^1.0.4",
     "rxjs": "~6.5.5",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.3"
