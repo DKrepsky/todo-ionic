@@ -15,6 +15,7 @@ import { catchError } from 'rxjs/operators';
 export class TodoItemComponent implements OnInit {
 
   todos: ToDoItemList;
+  flagEdit = true;
   todoTitle: string;
   loading: any;
   todoId = 0;
@@ -57,7 +58,7 @@ export class TodoItemComponent implements OnInit {
         this.todos.push(this.buildToDoItem());
 
         this.todoService.sincStorageforServer(this.todos);
-          console.log(this.todoId)
+          
         ++this.todoId;
       } catch (err) {
         this.Toast('Não foi possível criar um ToDo!', 'warning');
@@ -89,6 +90,17 @@ export class TodoItemComponent implements OnInit {
       return false;
     }
     return true;
+  }
+
+  abletoEdit() {
+    this.flagEdit = false;
+  }
+
+  disabledTodo(todo: ToDoItem){
+    this.todoService.updateToDo(todo, this.todoTitle).subscribe(() => {
+      
+    });
+    this.flagEdit = true;
   }
 
   async remove(todoid: number, toDoItem: ToDoItem) {

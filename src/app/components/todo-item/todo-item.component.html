@@ -9,12 +9,14 @@
     
     
     <ion-list style='margin-top: 20px;' *ngIf="todos.length > 0;else todosIsEmpty">
-      <ion-item *ngFor="let todo of todos">
-            
+      <ion-item *ngFor="let todo of todos;let i = index;">
+          
           <ion-checkbox slot="start" [(ngModel)]="todo.done"></ion-checkbox>
-          <ion-label>{{todo.name}}</ion-label>
+          <ion-input [disabled]="true" [(ngModel)]="todoTitle">{{todo.name}}</ion-input>
+          <ion-button [hidden]="!this.flagEdit" (click)="this.abletoEdit()" color="warning"><ion-icon name="create-outline"></ion-icon></ion-button>
+          <ion-button [hidden]="this.flagEdit" (click)="this.disabledTodo(todo)" color="success"><ion-icon name="download-outline"></ion-icon></ion-button>
           <ion-button (click)="this.remove(todo.id, todo)" color="danger"><ion-icon name="trash-outline"></ion-icon></ion-button>
-        
+          
       </ion-item>
     </ion-list>
     <ng-template #todosIsEmpty>

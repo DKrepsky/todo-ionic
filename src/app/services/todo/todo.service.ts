@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ToDoItem } from 'src/app/models/interfaces/todo-item.interface';
-import { Observable, of } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, of, throwError } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { map } from 'rxjs/operators';
-import { catchError } from 'rxjs/operators';
+import { catchError, retry } from 'rxjs/operators';
 
 import { Plugins } from '@capacitor/core';
 
@@ -37,31 +37,19 @@ export class TodoService {
   list(): Observable<ToDoItem[]> {
     return this.http.get<ToDoItem[]>(this.url)
       .pipe(
-        map((res: ToDoItem[]) => this.todos = res)
+        map((res: ToDoItem[]) => this.todos = res),
+        catchError(this.handleError)
       );
       
   }
 
   addTodo(toDoItem: ToDoItem, toDoItemList: ToDoItemList): Observable<ToDoItem> {
-    
-
+  
     return this.http.post<ToDoItem>(this.url, toDoItem)
       .pipe(
         map(toDoList => toDoList),
         catchError(() => this.setTodos(toDoItem, toDoItem.id))
       );
-  }
-
-  sincTodos(toDoItemList: ToDoItemList): Observable<ToDoItemList> {
-    try {
-      Storage.set({
-        key: `todos`,
-        value: JSON.stringify(toDoItemList)
-      });
-      return of(toDoItemList);
-    } catch (err) {
-      console.log('nao salvou');
-    }
   }
 
   setTodos(toDoItem: ToDoItem, toDoItemId: number): Observable<ToDoItem> {
@@ -120,15 +108,18 @@ export class TodoService {
             console.log('ToDo do Storage adicionado ao Servidor')
           }
         }
+      ) 
+    }    
+  }
+
+  updateToDo(todo: ToDoItem, todoTitle: string): Observable<ToDoItem> {
+    //console.log(todo.name);
+    //console.log(todoTitle);
+    return this.http.put<ToDoItem>(this.url + '/' + todo.id, todo.name)
+      .pipe(
+        retry(1),
+        catchError(this.handleError)
       )
-
-      
-
-
-
-      
-    }
-    
   }
 
   removeTodo(idtodo: number, ToDoItem: ToDoItem): Observable<boolean> {
@@ -159,4 +150,17 @@ export class TodoService {
     await Storage.clear();
     console.log('Storage foi formatado!');
   }
+
+  handleError(error: HttpErrorResponse) {
+    let errorMessage = '';
+    if (error.error instanceof ErrorEvent) {
+      // Erro ocorreu no lado do client
+      errorMessage = error.error.message;
+    } else {
+      // Erro ocorreu no lado do servidor
+      errorMessage = `Código do erro: ${error.status}, ` + `menssagem: ${error.message}`;
+    }
+    console.log(errorMessage);
+    return throwError(errorMessage);
+  };
 }
